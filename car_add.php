@@ -2,7 +2,7 @@
 session_start();
 require 'C:/xampp/htdocs/Laba_5/php/func.php';
 $table = table_for_all("salon");
-//var_dump($_POST);
+
 if ((isset($_POST['check'])) && (isset($_POST['model']))) {
     $id_salon = $_POST["id_salon"];
     $mark = $_POST["mark"];
@@ -74,7 +74,7 @@ if ((isset($_POST['check'])) && (isset($_POST['model']))) {
                         <label for="exampleFormControlSelect1">Автосалон</label>
                         <select name="id_salon" class="form-control" id="exampleFormControlSelect1" autofocus>
                             <?php foreach ($table as $row) {?>
-                                <option <?php if($_GET["id_salon"] == $row["id_salon"]) echo "selected" ?> value="<?php echo $row["id_salon"] ?>"><?php echo $row["mark"] ?></option>
+                                <option <?php if((isset($_GET["id_salon"])) and (($_GET["id_salon"] == $row["id_salon"]))) echo "selected" ?> value="<?php echo $row["id_salon"] ?>"><?php echo $row["mark"] ?></option>
                             <?php } ?>
 
                         </select>

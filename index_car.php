@@ -68,7 +68,8 @@ else $table = table_for_all('car');
                     <?php if(!$table){?>
                     <div class="mb-3">
                         <div class="alert alert-warning " role="alert">
-                            Добавленных автомобилей пока нет!
+                            Добавленных автомобилей пока нет!<br>
+                            Либо несущесвтует автосалон.
                         </div>
                     </div>
                     <?php } else { if (!isset($_GET["mark"])) {?>

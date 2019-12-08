@@ -138,14 +138,14 @@ function save_car($POST, $GET, $FILES, $db_name)
     foreach ($object as $key => $value)
         $row .= "$key=:$key, ";
     $row = substr($row, 0, -2);
-    //var_dump($row);
+
     $connect = connect();
     $query = "UPDATE $db_name SET $row WHERE id_$db_name=$id_car";
-    //var_dump($query);
+
     $connect->prepare($query)->execute($object);
 
     $query = "UPDATE relation SET id_salon=$id_salon WHERE id_car=$id_car";
-    //var_dump($query);
+
     $rez2 = $connect->prepare($query)->execute();
     $connect = null;
     if (!$rez2)
@@ -280,36 +280,5 @@ function edit_check ($id, $db_name)
     return -1;
 }
 
-function edit_car_php ($POST, $GET, $FILES, $mark, $id_car)
-{
-    $id_salon = htmlspecialchars($GET['id_salon']);
-    $car = car_array($POST, $mark);
-    if ($FILES["name"] != "")
-        $save = save_car($car, $FILES, "car", $id_car);
-    else {
-        $save = save_car($car, 0, "car", $id_car);
-    }
 
-    if (isset($GET['id_salon']) and ($save == 1))
-        header ("Location: index_car.php?mark=$mark&id_salon=$id_salon&edit=true");
-    if (isset($GET['id_salon']) and ($save == -1))
-        header ("Location: index_car.php?mark=$mark&id_salon=$id_salon&edit=false");
-    if (!isset($GET['id_salon']) and $save == -1)
-        header ("Location: all_cars.php?id_car=$id_car&edit=false");
-    if (!isset($GET['id_salon']) and $save == 1)
-        header ("Location: all_cars.php?id_car=$id_car&edit=true");
-}
-
-function index_car_php($POST, $GET, $FILES)
-{
-    $mark = htmlspecialchars($GET['mark']);
-    $car = car_array($POST, $mark);
-    $rez = add_car($car, $FILES, 'car');
-    if ($rez == 1)
-        header("Location: index_car.php?mark=$mark&id_salon=$id_salon");
-    else if ($rez == -1)
-        header("Location: index_car.php?mark=$mark&id_salon=$id_salon&add=false");
-    else
-        header('Location: index_salon.php');
-}
 
