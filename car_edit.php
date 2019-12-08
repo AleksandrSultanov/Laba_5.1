@@ -6,7 +6,12 @@ $row = row("car", htmlspecialchars($_GET["id_car"]));
 
 if ((isset($_POST['check'])) && (isset($_POST['model'])) && isset($_GET['mark'])) {
     $rez = save_car($_POST, $_GET, $_FILES["user_file"], "car");
-    header("Location: index_car.php?edit=$rez");
+    if (isset($_GET["id_salon"])){
+        $id_salon = $_GET["id_salon"];
+        $mark = $_POST["mark"];
+        header("Location: index_car.php?id_salon=$id_salon&mark=$mark&edit=$rez");}
+    else
+        header("Location: index_car.php?edit=$rez");
 }
 ?>
 <!DOCTYPE html>
@@ -74,7 +79,7 @@ if ((isset($_POST['check'])) && (isset($_POST['model'])) && isset($_GET['mark'])
                         <select name="id_salon" class="form-control" id="exampleFormControlSelect1" autofocus>
 
                             <?php foreach ($table as $salon) {?>
-                                <option <?php if($_GET["mark"] == $salon["mark"]) echo "selected" ?>  value="<?php  echo $salon["id_salon"] ?>"><?php echo $salon["mark"] ?></option>
+                                <option <?php if($_GET["id_salon"] == $salon["id_salon"]) echo "selected" ?>  value="<?php  echo $salon["id_salon"] ?>"><?php echo $salon["mark"] ?></option>
                             <?php } ?>
 
                         </select>
@@ -139,7 +144,7 @@ if ((isset($_POST['check'])) && (isset($_POST['model'])) && isset($_GET['mark'])
                         </picture>
                     <?php } ?>
 
-                    <input class="btn btn-primary btn-lg btn-block" name="check" value="Добавить автомобиль" type="submit">
+                    <input class="btn btn-primary btn-lg btn-block" name="check" value="Сохранить автомобиль" type="submit">
                 </form>
             </div>
 

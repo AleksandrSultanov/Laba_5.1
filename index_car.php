@@ -3,8 +3,7 @@ session_start();
 require  'C:/xampp/htdocs/Laba_5/php/func.php';
 
 if ((isset($_POST["id_car"])))
-    $rez1 = delete_car($_POST["id_car"]);
-
+    $rez = delete_car($_POST["id_car"]);
 if (isset($_GET["id_salon"]))
     $table = table_for_cars(htmlspecialchars($_GET["id_salon"]));
 else $table = table_for_all('car');
@@ -39,6 +38,9 @@ else $table = table_for_all('car');
 
             <li class="nav-item active">
                 <a class="nav-link" href="index_salon.php">Салоны<span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item active">
+                <a class="nav-link" href="index_car.php">Автомобили<span class="sr-only">(current)</span></a>
             </li>
             <?php if (!isset($_SESSION["email"])) { ?>
                 <li class="nav-item active">
@@ -77,14 +79,29 @@ else $table = table_for_all('car');
                     <span class=" badge badge-secondary badge-pill"><?php echo count($table);?></span>
                 </h4>
                 <div class="mb-3">
-                    <?php if ((isset($rez1) and ($rez1 === 1)) or ((isset($_GET["edit"] )) and ($_GET["edit"] == "1")) or ((isset($_GET["rez"] )) and ($_GET["rez"] == "1")) ) {  ?>
+                    <?php if ((isset($rez1) and ($rez1 === 1)) and (!isset($rez))) {  ?>
                         <div class="alert alert-success" role="alert">
                             Действие произошло успешно!
                         </div>
                     <?php } ?>
-                    <?php if (((isset($rez1)) and ($rez1 === -1)) or ((isset($_GET["edit"] )) and ($_GET["edit"] == "-1")) or ((isset($_GET["rez"] )) and ($_GET["rez"] == "-1"))) { ?>
+                    <?php if ((((isset($_GET["edit"])) and ($_GET["edit"] == "1")) or ((isset($_GET["rez"] )) and ($_GET["rez"] == "1"))) and (!isset($rez))) {  ?>
+                        <div class="alert alert-success" role="alert">
+                            Действие произошло успешно!
+                        </div>
+                    <?php } ?>
+                    <?php if (((((isset($_GET["edit"] )) and ($_GET["edit"] == "-1")) or ((isset($_GET["rez"] )) and ($_GET["rez"] == "-1")))) and (!isset($rez))) { ?>
                         <div class="alert alert-danger" role="alert">
                             Действие произошло с ошибкой!
+                        </div>
+                    <?php } ?>
+                    <?php if(isset($rez) and ($rez == 1)) { ?>
+                        <div class="alert alert-success" role="alert">
+                            Удаление произошло успешно.
+                        </div>
+                    <?php } ?>
+                    <?php if ((isset($rez)) and ($rez == -1)) { ?>
+                        <div class="alert alert-danger" role="alert">
+                            Удаление произошло с ошибкой!
                         </div>
                     <?php } ?>
                 </div>
@@ -116,7 +133,7 @@ else $table = table_for_all('car');
                                 <?php } else echo "<td></td>" ?>
                                 <td>
                                     <div class="btn-group">
-                                        <a href="car_edit.php?mark=<?php echo $row['mark']?>&id_car=<?php echo $row['id_car']?>" class="btn btn-warning">Изменить</a>
+                                        <a href="car_edit.php?mark=<?php echo $row['mark']?>&id_car=<?php echo $row['id_car']; if (isset($_GET["id_salon"])) echo "&id_salon=", $_GET["id_salon"]; ?>" class="btn btn-warning">Изменить</a>
                                         <button type="button" data-id_car="<?php echo $row["id_car"] ?>" class="btn btn-danger" id="delete_btn">Удалить</button>
                                     </div>
                                 </td>
@@ -128,7 +145,11 @@ else $table = table_for_all('car');
                     </table>
                 </ul>
                 <div class="col-md-8 offset-md-3">
-                <a href="car_add.php" class="btn btn-primary offset-11" id="add_salon">Добавить</a>
+                    <?php if (isset($_GET["id_salon"])) { ?>
+                <a href="car_add.php?id_salon=<?php echo htmlspecialchars($_GET["id_salon"]); ?>" class="btn btn-primary offset-11" id="add_salon">Добавить</a>
+                    <?php } else { ?>
+                        <a href="car_add.php" class="btn btn-primary offset-11" id="add_salon">Добавить</a>
+                    <?php }?>
                 </div>
             </div>
         </div>

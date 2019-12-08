@@ -67,9 +67,19 @@ $table = table_for_all('salon');
                     <span class="text">Добавленные автосалоны</span>
                     <span class="badge badge-secondary badge-pill"><?php echo count($table);?></span>
                 </h4>
-                <?php if ((isset($_GET['edit1']) and ($_GET['edit1'] == "1")) and (isset($_GET['edit2']) and ($_GET['edit2'] == "1")) or (isset($rez) and ($rez === 1)) or ((isset($_GET['add'])) and  ($_GET['add'] == 1))) { ?>
+                <?php if ((isset($_GET['edit1']) and ($_GET['edit1'] == "1")) and (isset($_GET['edit2']) and ($_GET['edit2'] == "1")) and (!isset($rez))){ ?>
                     <div class="alert alert-success" role="alert">
                         Действие произошло успешно!
+                    </div>
+                <?php } ?>
+                <?php if((((isset($_GET['add'])) and ($_GET['add'] == 1))) and (!isset($rez))) { ?>
+                <div class="alert alert-success" role="alert">
+                    Действие произошло успешно!
+                </div>
+                <?php } ?>
+                <?php if(isset($rez) and ($rez == 1)) { ?>
+                    <div class="alert alert-success" role="alert">
+                        Удаление произошло успешно.
                     </div>
                 <?php } ?>
                 <?php if ((isset($rez)) and ($rez == -1)) { ?>
@@ -81,7 +91,12 @@ $table = table_for_all('salon');
                 <?php } ?>
                 <?php if ((isset($_GET["edit1"])) and ($_GET["edit1"] == -1) or (isset($_GET["edit2"])) and ($_GET["edit2"] == -1)) { ?>
                     <div class="alert alert-danger" role="alert">
-                        Произошла ошибка при добавлении автосалона!
+                        Произошла ошибка при изменении автосалона!
+                    </div>
+                <?php } ?>
+                <?php if ((isset($_GET["add"])) and ($_GET["add"] == -1)) { ?>
+                    <div class="alert alert-danger" role="alert">
+                        Произошла ошибка при добавления автосалона!
                     </div>
                 <?php } ?>
                 <ul class="list-group mb-3">
@@ -108,7 +123,6 @@ $table = table_for_all('salon');
                                 <?php } else echo "<td></td>" ?>
                                 <td>
                                     <div class="btn-group">
-<!--                                        <a href="edit_salon.php?id_salon=--><?php //echo $row['id_salon']?><!--" class="btn btn-warning">Изменить</a>-->
                                         <a href="salon_edit.php?id_salon=<?php echo $row['id_salon']?>" class="btn btn-warning">Изменить</a>
                                         <button type="button" data-id_salon="<?php echo $row["id_salon"] ?>" class="btn btn-danger" id="delete_btn">Удалить</button>
                                     </div>
